@@ -13,36 +13,54 @@ public class Receipt {
     private BigDecimal tax;
 
     public double CalculateGrandTotal(List<Product> products, List<OrderItem> items) {
-        BigDecimal subTotal = calculateSubtotal(products, items);
-
-        for (Product product : products) {
-            OrderItem curItem = findOrderItemByProduct(items, product);
-
-            BigDecimal reducedPrice = product.getPrice()
-                    .multiply(product.getDiscountRate())
-                    .multiply(new BigDecimal(curItem.getCount()));
-
-            subTotal = subTotal.subtract(reducedPrice);
-        }
-        BigDecimal taxTotal = subTotal.multiply(tax);
-        BigDecimal grandTotal = subTotal.add(taxTotal);
-
+        BigDecimal subTotal = calculateSubTotal(products, items);
+        subTotal = deductOfPriceReductionWithTotal(products, items, subTotal);
+        BigDecimal grandTotal = calculateGrandTotal(subTotal);
         return grandTotal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    private BigDecimal deductOfPriceReductionWithTotal(List<Product> products, List<OrderItem> items, BigDecimal subTotal) {
+        for (Product product : products) {
+            subTotal = deductOfPriceReductionWithProduct(product, items, subTotal);
+        }
+        return subTotal;
+    }
+
+    private BigDecimal calculateGrandTotal(BigDecimal subTotal) {
+        BigDecimal taxTotal = subTotal.multiply(tax);
+        return subTotal.add(taxTotal);
+    }
+
+    private BigDecimal deductOfPriceReductionWithProduct(Product product, List<OrderItem> items, BigDecimal subTotal) {
+        OrderItem curItem = findOrderItemByProduct(items, product);
+        if (curItem == null) {
+            return subTotal;
+        }
+        BigDecimal reducedPrice = getReducedPrice(product, curItem.getCount());
+        return subTotal.subtract(reducedPrice);
+    }
+
+    private BigDecimal getReducedPrice(Product product, int count) {
+        return product.getPrice()
+                .multiply(product.getDiscountRate())
+                .multiply(new BigDecimal(count));
     }
 
 
     private OrderItem findOrderItemByProduct(List<OrderItem> items, Product product) {
-        OrderItem curItem = null;
         for (OrderItem item : items) {
-            if (item.getCode() == product.getCode()) {
-                curItem = item;
-                break;
+            if (equals(product, item)) {
+                return item;
             }
         }
-        return curItem;
+        return null;
     }
 
-    private BigDecimal calculateSubtotal(List<Product> products, List<OrderItem> items) {
+    private boolean equals(Product product, OrderItem item) {
+        return item.getCode() == product.getCode();
+    }
+
+    private BigDecimal calculateSubTotal(List<Product> products, List<OrderItem> items) {
         BigDecimal subTotal = new BigDecimal(0);
         for (Product product : products) {
             OrderItem item = findOrderItemByProduct(items, product);
