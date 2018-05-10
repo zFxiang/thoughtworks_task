@@ -1,35 +1,37 @@
 package tw.core;
 
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 
 import tw.core.generator.RandomIntGenerator;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-
 /**
  * 在RandomIntGeneratorTest文件中完成RandomIntGenerator中对应的单元测试
  */
 public class RandomIntGeneratorTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private RandomIntGenerator randomIntGenerator;
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         randomIntGenerator = new RandomIntGenerator();
     }
 
     @Test
     public void should_throw_exception_when_digitmax_less_than_numbersOfNeed() {
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class,
-                () -> randomIntGenerator.generateNums(1, 2));
-        assertEquals("Can't ask for more numbers than are available",exception.getMessage());
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("Can't ask for more numbers than are available");
+        randomIntGenerator.generateNums(1, 2);
     }
 
     @Test

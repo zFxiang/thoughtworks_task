@@ -1,10 +1,11 @@
 package tw.controllers;
 
+import static org.junit.Assert.*;
+
 import static org.mockito.Mockito.*;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import tw.commands.InputCommand;
 import tw.core.Answer;
@@ -22,8 +23,8 @@ public class GameControllerTest {
     private InputCommand inputCommand;
     private Game game;
 
-    @BeforeEach
-    void setUp() throws Exception{
+    @Before
+    public void setUp() throws Exception{
         AnswerGenerator answerGenerator = mock(AnswerGenerator.class);
         when(answerGenerator.generate()).thenReturn(Answer.createAnswer("1 2 3 4"));
         game = new Game(answerGenerator);
@@ -32,21 +33,21 @@ public class GameControllerTest {
     }
 
     @Test
-    void testPlayOnFail() throws Exception {
+    public void testPlayOnFail() throws Exception {
         when(inputCommand.input())
                 .thenReturn(Answer.createAnswer("1 2 3 5"))
                 .thenReturn(Answer.createAnswer("1 2 3 5"))
                 .thenReturn(Answer.createAnswer("1 2 3 6"));
         gameController.play(inputCommand);
-        Assertions.assertEquals(GameStatus.FAIL,game.checkStatus());
+        assertEquals(GameStatus.FAIL,game.checkStatus());
     }
     @Test
-    void testPlayOnSuccess() throws Exception {
+    public void testPlayOnSuccess() throws Exception {
         when(inputCommand.input())
                 .thenReturn(Answer.createAnswer("1 2 3 5"))
                 .thenReturn(Answer.createAnswer("1 2 3 5"))
                 .thenReturn(Answer.createAnswer("1 2 3 4"));
         gameController.play(inputCommand);
-        Assertions.assertEquals(GameStatus.SUCCESS,game.checkStatus());
+        assertEquals(GameStatus.SUCCESS,game.checkStatus());
     }
 }

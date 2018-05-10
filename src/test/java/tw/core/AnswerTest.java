@@ -1,41 +1,42 @@
 package tw.core;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
 
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import tw.core.exception.OutOfRangeAnswerException;
 import tw.core.model.Record;
-
-
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * 在AnswerTest文件中完成Answer中对应的单元测试
  */
 public class AnswerTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
     @Test
-    void testCreateAnswer() {
+    public void testCreateAnswer() {
         Answer answer = Answer.createAnswer("1 2 3");
         assertEquals("1 2 3",answer.toString());
     }
 
     @Test
-    void pass_when_validated() throws OutOfRangeAnswerException {
+    public void pass_when_validated() throws OutOfRangeAnswerException {
         Answer answer = Answer.createAnswer("1 2 3");
         answer.validate();
     }
 
     @Test
-    void pass_when_invalidated(){
+    public void pass_when_invalidated() throws OutOfRangeAnswerException {
+        thrown.expect(OutOfRangeAnswerException.class);
+        thrown.expectMessage("Answer format is incorrect");
         Answer answer = Answer.createAnswer("1 2 3 3");
-        OutOfRangeAnswerException exception = assertThrows(OutOfRangeAnswerException.class, answer::validate);
-        assertEquals("Answer format is incorrect",exception.getMessage());
+        answer.validate();
     }
 
     @Test
-    void testCheck() {
+    public void testCheck() {
         Answer answer1 = Answer.createAnswer("1 2 3 4");
         Answer answer2 = Answer.createAnswer("5 2 3 1");
         Record record = answer1.check(answer2);
@@ -43,7 +44,7 @@ public class AnswerTest {
     }
 
     @Test
-    void testGetIndexOfNum() {
+    public void testGetIndexOfNum() {
         Answer answer = Answer.createAnswer("1 2 3 4");
         int index = answer.getIndexOfNum("1");
         assertEquals(0,index);
