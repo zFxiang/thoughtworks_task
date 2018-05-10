@@ -1,12 +1,14 @@
 package tw.core;
 
 import com.google.inject.Inject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import tw.core.exception.OutOfRangeAnswerException;
 import tw.core.generator.AnswerGenerator;
 import tw.core.model.GuessResult;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static tw.core.GameStatus.CONTINUE;
 import static tw.core.GameStatus.FAIL;
@@ -25,7 +27,7 @@ public class Game {
     @Inject
     public Game(AnswerGenerator answerGenerator) throws OutOfRangeAnswerException {
         this.actualAnswer = answerGenerator.generate();
-        this.guessResults = new ArrayList();
+        this.guessResults = new ArrayList<>();
     }
 
     public GuessResult guess(Answer inputAnswer) {
@@ -41,7 +43,7 @@ public class Game {
     }
 
     public boolean checkCoutinue() {
-        return this.checkStatus() == CONTINUE;
+        return this.checkStatus().equals(CONTINUE);
     }
 
     public String checkStatus() {
