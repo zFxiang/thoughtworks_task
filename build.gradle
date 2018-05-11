@@ -16,11 +16,11 @@ plugins {
     id "org.flywaydb.flyway" version "5.0.7"
 }
 
-//flyway {
-//    url = 'jdbc:mysql://localhost:3306/employee_db?useSSL=false'
-//    user = 'root'
-//    password = 'root'
-//}
+flyway {
+    url = 'jdbc:mysql://localhost:3306/employee_db?useSSL=false'
+    user = 'root'
+    password = 'root'
+}
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven'

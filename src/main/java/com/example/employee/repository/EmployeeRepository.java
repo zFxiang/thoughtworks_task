@@ -9,8 +9,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     //以下所有的*都代表变量
 
     //1.查询名字是*的第一个employee
@@ -31,4 +33,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     //7.删除姓名是*的employee
     @Modifying
     Integer removeByName(String name);
+    List<Employee> findByGender(String gender);
 }

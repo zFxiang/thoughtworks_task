@@ -1,15 +1,25 @@
 package com.example.employee.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class Company {
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Integer id;
     private String companyName;
     private Integer employeesNumber;
 
+    @OneToMany(mappedBy = "companyId")
+    private List<Employee> employees;
     public Company() {
     }
 
@@ -41,5 +51,13 @@ public class Company {
 
     public void setEmployeesNumber(Integer employeesNumber) {
         this.employeesNumber = employeesNumber;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }
