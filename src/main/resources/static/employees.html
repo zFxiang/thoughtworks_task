@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Employee table</title>
+    <style>
+        .table {
+            border-collapse: collapse;
+            width: 50%;
+            margin: 100px 0 0 25%;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .table th, td {
+            border: 1px solid black;
+        }
+
+        .table th {
+            color: white;
+            background: black;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+<table class="table">
+    <tr>
+        <th>编号</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+    </tr>
+</table>
+<div id="loadMsg" style="text-align: center">数据加载中...</div>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+       $.get('/employees',function (data) {
+          var $tbody = $('.table tbody');
+          $tbody.find('td').parent().remove();
+          data.forEach(function (emp) {
+              var $tr = $('<tr></tr>');
+              $tr.append($('<td></td>').text(emp.id));
+              $tr.append($('<td></td>').text(emp.name));
+              $tr.append($('<td></td>').text(emp.age));
+              $tr.append($('<td></td>').text(emp.gender));
+              $tbody.append($tr);
+          });
+          $('#loadMsg').hide();
+       });
+    });
+</script>
+</body>
+</html>
