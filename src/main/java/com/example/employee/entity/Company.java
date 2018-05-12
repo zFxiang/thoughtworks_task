@@ -3,17 +3,13 @@ package com.example.employee.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class Company {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+//    @GeneratedValue(strategy = IDENTITY)
     private Integer id;
     private String companyName;
     private Integer employeesNumber;

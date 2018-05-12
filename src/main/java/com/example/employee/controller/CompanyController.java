@@ -24,32 +24,38 @@ public class CompanyController {
     private CompanyRepository companyRepository;
 
     @GetMapping("")
-    public List<Company> list(){
+    public List<Company> list() {
         return companyRepository.findAll();
     }
+
     @GetMapping("/page/{page}/pageSize/{size}")
-    public Page<Company> listPage(@PathVariable Integer page, @PathVariable Integer size){
-        return companyRepository.findAll(PageRequest.of(page,size));
+    public Page<Company> listPage(@PathVariable Integer page, @PathVariable Integer size) {
+        return companyRepository.findAll(PageRequest.of(page, size));
     }
+
     @GetMapping("/{id}")
-    public Company get(@PathVariable Integer id){
+    public Company get(@PathVariable Integer id) {
         return companyRepository.findById(id).orElse(null);
     }
+
     @GetMapping("/{id}/employees")
-    public List<Employee> getEmployees(@PathVariable Integer id){
+    public List<Employee> getEmployees(@PathVariable Integer id) {
         return companyRepository.findById(id).orElse(new Company()).getEmployees();
     }
+
     @PostMapping("")
-    public Company add(Company company){
+    public Company add(Company company) {
         return companyRepository.save(company);
     }
+
     @PutMapping("/{id}")
-    public Company update(@PathVariable Integer id, Company company){
+    public Company update(@PathVariable Integer id, Company company) {
         company.setId(id);
         return companyRepository.save(company);
     }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id){
+    public void delete(@PathVariable Integer id) {
         companyRepository.deleteById(id);
     }
 }

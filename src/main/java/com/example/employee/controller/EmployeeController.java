@@ -23,32 +23,38 @@ public class EmployeeController {
     private EmployeeRepository employeeRepository;
 
     @GetMapping("")
-    public List<Employee> list(){
+    public List<Employee> list() {
         return employeeRepository.findAll();
     }
+
     @GetMapping("/page/{page}/pageSize/{size}")
-    public Page<Employee> listPage(@PathVariable Integer page, @PathVariable Integer size){
-        return employeeRepository.findAll(PageRequest.of(page,size));
+    public Page<Employee> listPage(@PathVariable Integer page, @PathVariable Integer size) {
+        return employeeRepository.findAll(PageRequest.of(page, size));
     }
+
     @GetMapping("/{id}")
-    public Employee getById(@PathVariable Integer id){
+    public Employee getById(@PathVariable Integer id) {
         return employeeRepository.findById(id).orElse(null);
     }
+
     @GetMapping("/male")
-    public List<Employee> getMaleList(){
+    public List<Employee> getMaleList() {
         return employeeRepository.findByGender("male");
     }
+
     @PostMapping("")
-    public Employee add(Employee employee){
+    public Employee add(Employee employee) {
         return employeeRepository.save(employee);
     }
+
     @PutMapping("/{id}")
-    public Employee update(@PathVariable Integer id, Employee employee){
+    public Employee update(@PathVariable Integer id, Employee employee) {
         employee.setId(id);
         return employeeRepository.save(employee);
     }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id){
+    public void delete(@PathVariable Integer id) {
         employeeRepository.deleteById(id);
     }
 }
